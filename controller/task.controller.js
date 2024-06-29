@@ -35,13 +35,13 @@ const updateTask = async (req, res) => {
         }
     
         if (user.role === "regular" && user.username == task.assignee ) {
-            await TaskModel.updateOne({ _id: taskId }, { $set: { status } });
+            await TaskModel.findByIdAndUpdate(taskId, { status });
             return res.status(200).send({ "msg": "Status updated successfully." });
 
         } else if (user.role === "admin"){
            const assigneeUser = await UserModel.findOne({ username: assignee });
 
-            await TaskModel.updateOne({ _id: taskId }, { $set: { title, description, assignee: assigneeUser._id, status, duedate } });
+            await TaskModel.findByIdAndUpdate({ _id: taskId }, { $set: { title, description, assignee: assigneeUser.username, status, duedate } });
             return res.status(200).send({ "msg": "Task updated successfully." });
         } else {
             return res.status(403).send("Unauthorized to update task.");
