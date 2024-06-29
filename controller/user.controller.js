@@ -39,7 +39,7 @@ const login = async(req,res) => {
                 }if(result){
                     let accessToken = jwt.sign({id: user._id},process.env.JWT_SECRET,{expiresIn: "30m"});
                     let refreshToken = jwt.sign({id: user._id},process.env.JWT_SECRET,{expiresIn: "24h"});
-                    res.status(200).send({"msg": "Logged In successfully.", "accessToken": accessToken, "refreshToken":refreshToken})
+                    res.status(200).send({"msg": "Logged In successfully.", "accessToken": accessToken, "refreshToken":refreshToken, "role": user.role})
                 }else{
                     res.status(404).send({"msg": "Wrong password."})
                 }

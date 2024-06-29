@@ -65,10 +65,12 @@ const deleteTask = async(req,res) => {
 const allTask = async(req,res) => {
     try{
         const request = req.body;
+       
         let task;
         const user = await UserModel.find({_id: request.userId})
-        if(user[0].role === "regular"){
-             task = await TaskModel.find({ assignee: request.userId});
+        // console.log(request.userName)
+        if(user[0].role == "regular"){
+             task = await TaskModel.find({ assignee: user[0].username});
         }else{
             task = await TaskModel.find();
         }
