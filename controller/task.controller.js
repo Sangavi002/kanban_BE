@@ -5,12 +5,12 @@ const createTask = async(req,res) =>{
     const {title, description, assignee, status, duedate} = req.body;
     try{
         const regularUser = await UserModel.findOne({username: assignee});
-
+        
         if (!regularUser) {
             return res.status(404).send({ msg: "Regular user not found." });
         }
-        const assigneeId = regularUser._id;
-        const task = new TaskModel({title, description, assignee:assigneeId, status, duedate});
+       
+        const task = new TaskModel({title, description, assignee:regularUser.username, status, duedate});
         await task.save();
         res.status(200).send({"msg": "New task is created."})
     }catch(err){
@@ -34,7 +34,7 @@ const updateTask = async (req, res) => {
             return res.status(404).send("User not found.");
         }
     
-        if (user.role === "regular" && user._id == task.assignee ) {
+        if (user.role === "regular" && user.username == task.assignee ) {
             await TaskModel.updateOne({ _id: taskId }, { $set: { status } });
             return res.status(200).send({ "msg": "Status updated successfully." });
 
