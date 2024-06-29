@@ -5,11 +5,13 @@ const connection = require("./config/db")
 const userRouter = require("./route/user.route")
 const taskRouter = require("./route/task.route")
 const jwt = require("jsonwebtoken")
+const cors = require("cors")
 
 const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
+app.use(cors());
 app.use("/user", userRouter);
 app.use("/task", taskRouter);
 
